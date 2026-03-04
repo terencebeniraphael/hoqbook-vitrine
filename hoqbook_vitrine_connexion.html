@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HoqBook — Espace Auteur · Connexion</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal:#0a9e8f; --teal-dark:#077a6e; --teal-light:#e8faf8;
+  --teal-mid:#04c5b0; --gold:#d4a843; --dark:#0f1a1c;
+  --white:#ffffff; --gray:#5a7070; --light:#f4faf9;
+  --light-2:#eaf6f4; --border:#d0ebe8; --text:#1a2e31;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { font-family:'DM Sans',sans-serif; background:var(--white); color:var(--text); overflow-x:hidden; }
+
+/* NAV */
+nav { position:fixed; top:0; left:0; right:0; z-index:100; padding:0 6%; display:flex; align-items:center; justify-content:space-between; height:72px; background:rgba(255,255,255,0.92); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); box-shadow:0 2px 20px rgba(0,0,0,0.06); }
+.nav-logo { height:36px; object-fit:contain; }
+.nav-links { display:flex; gap:36px; align-items:center; }
+.nav-links a { font-size:14px; font-weight:600; color:var(--gray); text-decoration:none; transition:color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color:var(--teal); }
+.nav-right { display:flex; align-items:center; gap:16px; }
+.lang-selector { display:flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:var(--gray); cursor:pointer; padding:6px 12px; border:1px solid var(--border); border-radius:8px; }
+.lang-active { color:var(--teal); font-weight:800; }
+.nav-login { font-size:13px; font-weight:700; color:var(--text); text-decoration:none; padding:8px 18px; border:1px solid var(--border); border-radius:10px; transition:all 0.2s; }
+.nav-login:hover { border-color:var(--teal); color:var(--teal); }
+.nav-cta { padding:10px 22px; background:var(--teal); color:white; border:none; border-radius:10px; font-size:13px; font-weight:800; cursor:pointer; font-family:'DM Sans',sans-serif; text-decoration:none; box-shadow:0 4px 16px rgba(10,158,143,0.25); transition:all 0.2s; }
+.nav-cta:hover { background:var(--teal-dark); transform:translateY(-1px); }
+
+/* PAGE */
+.page-wrapper { min-height:100vh; display:grid; grid-template-columns:1fr 1fr; padding-top:72px; }
+
+/* LEFT PANEL */
+.left-panel { background:linear-gradient(135deg, var(--dark) 0%, #0d2428 60%, #0a1e22 100%); display:flex; flex-direction:column; justify-content:center; align-items:center; padding:80px 60px; position:relative; overflow:hidden; }
+.left-panel::before { content:''; position:absolute; top:-150px; right:-150px; width:400px; height:400px; border-radius:50%; background:radial-gradient(circle, rgba(10,158,143,0.2) 0%, transparent 70%); }
+.left-panel::after { content:''; position:absolute; bottom:-100px; left:-100px; width:350px; height:350px; border-radius:50%; background:radial-gradient(circle, rgba(212,168,67,0.1) 0%, transparent 70%); }
+.left-content { position:relative; z-index:2; max-width:380px; }
+.left-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(10,158,143,0.15); border:1px solid rgba(10,158,143,0.3); padding:6px 16px; border-radius:20px; font-size:12px; font-weight:700; color:var(--teal-mid); margin-bottom:32px; }
+.left-title { font-family:'Playfair Display',serif; font-size:40px; font-weight:900; color:white; line-height:1.1; margin-bottom:20px; }
+.left-title em { font-style:italic; color:var(--teal-mid); }
+.left-sub { font-size:15px; color:rgba(255,255,255,0.5); line-height:1.7; margin-bottom:40px; }
+.left-stats { display:flex; flex-direction:column; gap:16px; }
+.left-stat { display:flex; align-items:center; gap:14px; }
+.stat-icon { width:40px; height:40px; border-radius:10px; background:rgba(10,158,143,0.15); border:1px solid rgba(10,158,143,0.25); display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+.stat-text { font-size:13px; color:rgba(255,255,255,0.55); line-height:1.4; }
+.stat-text strong { color:white; font-weight:700; }
+
+/* RIGHT PANEL */
+.right-panel { display:flex; flex-direction:column; justify-content:center; align-items:center; padding:60px; background:var(--white); overflow-y:auto; }
+.auth-box { width:100%; max-width:420px; }
+.auth-title { font-family:'Playfair Display',serif; font-size:28px; font-weight:900; color:var(--dark); margin-bottom:6px; }
+.auth-sub { font-size:14px; color:var(--gray); margin-bottom:28px; }
+
+.tabs { display:flex; background:var(--light); border:1px solid var(--border); border-radius:12px; padding:4px; margin-bottom:24px; }
+.tab { flex:1; padding:10px; border-radius:9px; font-size:14px; font-weight:700; cursor:pointer; text-align:center; color:var(--gray); transition:all 0.2s; border:none; background:transparent; font-family:'DM Sans',sans-serif; }
+.tab.active { background:white; color:var(--teal); box-shadow:0 2px 8px rgba(0,0,0,0.08); }
+
+.btn-google { width:100%; padding:13px; display:flex; align-items:center; justify-content:center; gap:10px; background:white; border:1.5px solid var(--border); border-radius:12px; font-size:14px; font-weight:700; color:var(--dark); cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.2s; text-decoration:none; margin-bottom:20px; }
+.btn-google:hover { border-color:var(--teal); background:var(--teal-light); }
+
+.divider { display:flex; align-items:center; gap:12px; margin-bottom:20px; }
+.divider-line { flex:1; height:1px; background:var(--border); }
+.divider-text { font-size:12px; color:var(--gray); font-weight:600; }
+
+.form-group { margin-bottom:14px; }
+.form-label { display:block; font-size:13px; font-weight:700; color:var(--text); margin-bottom:6px; }
+.form-input { width:100%; padding:11px 16px; border:1.5px solid var(--border); border-radius:10px; font-size:14px; font-family:'DM Sans',sans-serif; color:var(--text); background:white; transition:all 0.2s; outline:none; }
+.form-input:focus { border-color:var(--teal); box-shadow:0 0 0 3px rgba(10,158,143,0.1); }
+.form-input::placeholder { color:#aac5c2; }
+
+.btn-submit { width:100%; padding:14px; background:var(--teal); color:white; border:none; border-radius:12px; font-size:15px; font-weight:800; cursor:pointer; font-family:'DM Sans',sans-serif; box-shadow:0 6px 20px rgba(10,158,143,0.3); transition:all 0.2s; margin-top:8px; text-decoration:none; display:block; text-align:center; }
+.btn-submit:hover { background:var(--teal-dark); transform:translateY(-1px); }
+
+.forgot { text-align:right; margin-top:-6px; margin-bottom:14px; }
+.forgot a { font-size:12px; color:var(--teal); text-decoration:none; font-weight:600; }
+.terms { font-size:11px; color:var(--gray); text-align:center; margin-top:14px; line-height:1.6; }
+.terms a { color:var(--teal); text-decoration:none; }
+.form-panel { display:none; }
+.form-panel.active { display:block; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+
+/* FOOTER */
+footer { background:var(--dark); border-top:1px solid rgba(255,255,255,0.06); padding:60px 6% 32px; }
+.footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:48px; margin-bottom:40px; }
+.footer-logo { height:32px; object-fit:contain; margin-bottom:16px; display:block; }
+.footer-desc { font-size:13px; color:rgba(255,255,255,0.35); line-height:1.7; max-width:240px; margin-bottom:20px; }
+.footer-socials { display:flex; gap:10px; }
+.social-btn { width:34px; height:34px; border-radius:8px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center; font-size:14px; cursor:pointer; transition:all 0.2s; }
+.social-btn:hover { background:rgba(10,158,143,0.2); border-color:rgba(10,158,143,0.3); }
+.footer-col-title { font-size:12px; font-weight:800; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:1px; margin-bottom:16px; }
+.footer-links { list-style:none; display:flex; flex-direction:column; gap:10px; }
+.footer-links a { font-size:13px; color:rgba(255,255,255,0.35); text-decoration:none; transition:color 0.2s; }
+.footer-links a:hover { color:var(--teal); }
+.footer-bottom { display:flex; justify-content:space-between; align-items:center; padding-top:28px; border-top:1px solid rgba(255,255,255,0.06); font-size:12px; color:rgba(255,255,255,0.25); flex-wrap:wrap; gap:12px; }
+.footer-bottom a { color:rgba(255,255,255,0.35); text-decoration:none; }
+
+@media(max-width:1024px) { .footer-grid { grid-template-columns:1fr 1fr; } }
+@media(max-width:768px) {
+  .page-wrapper { grid-template-columns:1fr; }
+  .left-panel { display:none; }
+  .right-panel { padding:40px 24px; }
+  .form-row { grid-template-columns:1fr; }
+  .nav-links { display:none; }
+  .footer-grid { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <img class="nav-logo" src="images/hoqbook-logo.png" alt="HoqBook" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+  <span style="display:none; font-family:'Playfair Display',serif; font-size:22px; font-weight:900; color:var(--dark);">Hoq<span style="color:var(--teal);">Book</span></span>
+  <div class="nav-links">
+    <a href="hoqbook_vitrine_comment.html">Comment ça marche</a>
+    <a href="hoqbook_vitrine_catalogue.html">Catalogue</a>
+    <a href="hoqbook_vitrine_auteur.html" class="active">Espace Auteur</a>
+    <a href="hoqbook_vitrine_tarifs.html">Tarifs</a>
+    <a href="hoqbook_vitrine_apropos.html">À propos</a>
+  </div>
+  <div class="nav-right">
+    <div class="lang-selector"><span class="lang-active">FR</span> · <span>EN</span></div>
+    <a href="hoqbook_vitrine_connexion.html" class="nav-login">Se connecter</a>
+    <a href="hoqbook_vitrine_tarifs.html" class="nav-cta">S'abonner</a>
+  </div>
+</nav>
+
+<!-- PAGE CONTENT -->
+<div class="page-wrapper">
+  <div class="left-panel">
+    <div class="left-content">
+      <div class="left-badge">✍️ Espace Auteur</div>
+      <h1 class="left-title">Publiez.<br><em>Gagnez votre vie.</em></h1>
+      <p class="left-sub">Rejoignez 120+ auteurs africains qui publient et monétisent leurs œuvres sur HoqBook.</p>
+      <div class="left-stats">
+        <div class="left-stat">
+          <div class="stat-icon">💰</div>
+          <div class="stat-text"><strong>70% des revenus</strong> reversés à l'auteur</div>
+        </div>
+        <div class="left-stat">
+          <div class="stat-icon">📤</div>
+          <div class="stat-text"><strong>Publication gratuite</strong> · En ligne en moins de 48h</div>
+        </div>
+        <div class="left-stat">
+          <div class="stat-icon">📅</div>
+          <div class="stat-text"><strong>Paiement mensuel</strong> via Mobile Money ou carte</div>
+        </div>
+        <div class="left-stat">
+          <div class="stat-icon">📊</div>
+          <div class="stat-text"><strong>Tableau de bord</strong> · Suivez vos stats en temps réel</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="right-panel">
+    <div class="auth-box">
+      <h2 class="auth-title">Espace Auteur</h2>
+      <p class="auth-sub">Connectez-vous ou créez votre compte auteur gratuitement.</p>
+
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab('connexion', this)">Connexion</button>
+        <button class="tab" onclick="switchTab('inscription', this)">Inscription</button>
+      </div>
+
+      <a href="#" class="btn-google">
+        <svg width="20" height="20" viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+        </svg>
+        Continuer avec Google
+      </a>
+
+      <div class="divider">
+        <div class="divider-line"></div>
+        <span class="divider-text">ou</span>
+        <div class="divider-line"></div>
+      </div>
+
+      <div class="form-panel active" id="panel-connexion">
+        <div class="form-group">
+          <label class="form-label">Adresse email</label>
+          <input type="email" class="form-input" placeholder="votre@email.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Mot de passe</label>
+          <input type="password" class="form-input" placeholder="••••••••">
+        </div>
+        <div class="forgot"><a href="#">Mot de passe oublié ?</a></div>
+        <a href="hoqbook_vitrine_moncompte.html" class="btn-submit">Se connecter</a>
+        <p class="terms">En vous connectant, vous acceptez nos <a href="#">CGV</a> et notre <a href="#">Politique de confidentialité</a>.</p>
+      </div>
+
+      <div class="form-panel" id="panel-inscription">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Prénom</label>
+            <input type="text" class="form-input" placeholder="Kofi">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nom</label>
+            <input type="text" class="form-input" placeholder="Mensah">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Adresse email</label>
+          <input type="email" class="form-input" placeholder="votre@email.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Mot de passe</label>
+          <input type="password" class="form-input" placeholder="Minimum 8 caractères">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Pays</label>
+          <select class="form-input">
+            <option value="">Sélectionnez votre pays</option>
+            <option>Bénin</option><option>Burkina Faso</option><option>Cameroun</option>
+            <option>Côte d'Ivoire</option><option>Congo (RDC)</option><option>Gabon</option>
+            <option>Ghana</option><option>Guinée</option><option>Kenya</option>
+            <option>Madagascar</option><option>Mali</option><option>Maroc</option>
+            <option>Niger</option><option>Nigeria</option><option>Rwanda</option>
+            <option>Sénégal</option><option>Togo</option><option>Tunisie</option>
+            <option>Autre</option>
+          </select>
+        </div>
+        <a href="hoqbook_vitrine_moncompte.html" class="btn-submit">Créer mon compte auteur</a>
+        <p class="terms">Vous complèterez votre profil (pseudonyme, bio, paiement) après inscription. En créant un compte, vous acceptez nos <a href="#">CGV</a> et notre <a href="#">Politique de confidentialité</a>.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <img class="footer-logo" src="images/hoqbook-logo.png" alt="HoqBook">
+      <p class="footer-desc">La plateforme de lecture africaine sans limite. Des milliers de livres d'auteurs africains, un seul abonnement.</p>
+      <div class="footer-socials">
+        <div class="social-btn">𝕏</div>
+        <div class="social-btn">in</div>
+        <div class="social-btn">f</div>
+        <div class="social-btn">▶</div>
+      </div>
+    </div>
+    <div>
+      <p class="footer-col-title">Plateforme</p>
+      <ul class="footer-links">
+        <li><a href="hoqbook_vitrine_catalogue.html">Catalogue</a></li>
+        <li><a href="hoqbook_vitrine_comment.html">Comment ça marche</a></li>
+        <li><a href="hoqbook_vitrine_tarifs.html">Tarifs</a></li>
+        <li><a href="#">Concours</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-col-title">Auteurs</p>
+      <ul class="footer-links">
+        <li><a href="#">Publier un livre</a></li>
+        <li><a href="hoqbook_vitrine_auteur.html">Espace auteur</a></li>
+        <li><a href="#">Gains</a></li>
+        <li><a href="#">Guide</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-col-title">Légal</p>
+      <ul class="footer-links">
+        <li><a href="hoqbook_vitrine_apropos.html">À propos</a></li>
+        <li><a href="#">CGV</a></li>
+        <li><a href="#">Confidentialité</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 HoqBook. Tous droits réservés.</span>
+    <span>Fait avec ❤️ pour l'Afrique.</span>
+    <span><a href="#">FR</a> · <a href="#">EN</a></span>
+  </div>
+</footer>
+
+<script>
+function switchTab(tab, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('panel-' + tab).classList.add('active');
+}
+</script>
+</body>
+</html>
