@@ -166,7 +166,7 @@ footer { background:var(--dark); border-top:1px solid rgba(255,255,255,0.06); pa
         <button class="tab" onclick="switchTab('inscription', this)">Inscription</button>
       </div>
 
-      <a href="#" class="btn-google">
+      <button id="btn-google" class="btn-google">
         <svg width="20" height="20" viewBox="0 0 24 24">
           <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
           <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -174,7 +174,7 @@ footer { background:var(--dark); border-top:1px solid rgba(255,255,255,0.06); pa
           <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
         </svg>
         Continuer avec Google
-      </a>
+      </button>
 
       <div class="divider">
         <div class="divider-line"></div>
@@ -185,14 +185,14 @@ footer { background:var(--dark); border-top:1px solid rgba(255,255,255,0.06); pa
       <div class="form-panel active" id="panel-connexion">
         <div class="form-group">
           <label class="form-label">Adresse email</label>
-          <input type="email" class="form-input" placeholder="votre@email.com">
+          <input type="email" id="email-connexion" class="form-input" placeholder="votre@email.com">
         </div>
         <div class="form-group">
           <label class="form-label">Mot de passe</label>
-          <input type="password" class="form-input" placeholder="••••••••">
+          <input type="password" id="password-connexion" class="form-input" placeholder="••••••••">
         </div>
         <div class="forgot"><a href="#">Mot de passe oublié ?</a></div>
-        <a href="hoqbook_vitrine_moncompte.html" class="btn-submit">Se connecter</a>
+        <button id="btn-connexion" class="btn-submit">Se connecter</button>
         <p class="terms">En vous connectant, vous acceptez nos <a href="#">CGV</a> et notre <a href="#">Politique de confidentialité</a>.</p>
       </div>
 
@@ -200,24 +200,24 @@ footer { background:var(--dark); border-top:1px solid rgba(255,255,255,0.06); pa
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">Prénom</label>
-            <input type="text" class="form-input" placeholder="Kofi">
+            <input type="text" id="prenom" class="form-input" placeholder="Kofi">
           </div>
           <div class="form-group">
             <label class="form-label">Nom</label>
-            <input type="text" class="form-input" placeholder="Mensah">
+            <input type="text" id="nom" class="form-input" placeholder="Mensah">
           </div>
         </div>
         <div class="form-group">
           <label class="form-label">Adresse email</label>
-          <input type="email" class="form-input" placeholder="votre@email.com">
+          <input type="email" id="email-inscription" class="form-input" placeholder="votre@email.com">
         </div>
         <div class="form-group">
           <label class="form-label">Mot de passe</label>
-          <input type="password" class="form-input" placeholder="Minimum 8 caractères">
+          <input type="password" id="password-inscription" class="form-input" placeholder="Minimum 8 caractères">
         </div>
         <div class="form-group">
           <label class="form-label">Pays</label>
-          <select class="form-input">
+          <select id="pays" class="form-input">
             <option value="">Sélectionnez votre pays</option>
             <option>Bénin</option><option>Burkina Faso</option><option>Cameroun</option>
             <option>Côte d'Ivoire</option><option>Congo (RDC)</option><option>Gabon</option>
@@ -228,7 +228,7 @@ footer { background:var(--dark); border-top:1px solid rgba(255,255,255,0.06); pa
             <option>Autre</option>
           </select>
         </div>
-        <a href="hoqbook_vitrine_moncompte.html" class="btn-submit">Créer mon compte auteur</a>
+        <button id="btn-inscription" class="btn-submit">Créer mon compte auteur</button>
         <p class="terms">Vous complèterez votre profil (pseudonyme, bio, paiement) après inscription. En créant un compte, vous acceptez nos <a href="#">CGV</a> et notre <a href="#">Politique de confidentialité</a>.</p>
       </div>
     </div>
@@ -283,13 +283,59 @@ footer { background:var(--dark); border-top:1px solid rgba(255,255,255,0.06); pa
   </div>
 </footer>
 
-<script>
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+const supabase = createClient(
+  'https://tnocywlwwusobdutyqpd.supabase.co',
+  'sb_publishable_8eh6TNYCLj97KAomUP5h1A_imlowU-n'
+)
+
+// Connexion Google
+document.getElementById('btn-google').addEventListener('click', async () => {
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: 'https://hoqbook.musigerme.com/hoqbook_vitrine_moncompte.html'
+    }
+  })
+  if (error) alert('Erreur : ' + error.message)
+})
+
+// Connexion email/mot de passe
+document.getElementById('btn-connexion').addEventListener('click', async () => {
+  const email = document.getElementById('email-connexion').value
+  const password = document.getElementById('password-connexion').value
+  if (!email || !password) { alert('Veuillez remplir tous les champs.'); return }
+  const { error } = await supabase.auth.signInWithPassword({ email, password })
+  if (error) alert('Erreur : ' + error.message)
+  else window.location.href = 'hoqbook_vitrine_moncompte.html'
+})
+
+// Inscription email/mot de passe
+document.getElementById('btn-inscription').addEventListener('click', async () => {
+  const prenom = document.getElementById('prenom').value
+  const nom = document.getElementById('nom').value
+  const email = document.getElementById('email-inscription').value
+  const password = document.getElementById('password-inscription').value
+  const pays = document.getElementById('pays').value
+  if (!prenom || !nom || !email || !password) { alert('Veuillez remplir tous les champs obligatoires.'); return }
+  const { error } = await supabase.auth.signUp({
+    email, password,
+    options: { data: { prenom, nom, pays } }
+  })
+  if (error) alert('Erreur : ' + error.message)
+  else alert('Compte créé ! Vérifiez votre email pour confirmer votre inscription.')
+})
+
+// Onglets
 function switchTab(tab, el) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
   el.classList.add('active');
   document.getElementById('panel-' + tab).classList.add('active');
 }
+window.switchTab = switchTab
 </script>
 </body>
 </html>
